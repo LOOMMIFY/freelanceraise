@@ -82,15 +82,17 @@ const Projects = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-            <div className="lg:col-span-1">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Filters - Now in a vertical layout */}
+            <div className="lg:col-span-3">
               <div className="bg-white rounded-lg border p-4 sticky top-28">
                 <h2 className="font-medium text-lg mb-4">Filtres</h2>
                 <ProjectFilters />
               </div>
             </div>
             
-            <div className="lg:col-span-3">
+            {/* Main content area */}
+            <div className="lg:col-span-9">
               <div className="bg-white rounded-lg border p-4 mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex-1">
