@@ -2,8 +2,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { MapPin, Users } from "lucide-react";
+import { MapPin, Users, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 interface ProjectCardProps {
   title: string;
@@ -43,12 +44,13 @@ export const ProjectCard = ({
           <div className="flex items-start justify-between">
             <div>
               <h3 className="font-semibold leading-none tracking-tight">{title}</h3>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-1 flex items-center">
                 {company.name}
                 {company.verified && (
-                  <Badge variant="secondary" className="ml-2">
-                    Vérifié
-                  </Badge>
+                  <span className="inline-flex items-center ml-2">
+                    <CheckCircle className="h-3 w-3 text-loommify-secondary mr-1" />
+                    <span className="text-xs">Vérifié</span>
+                  </span>
                 )}
               </p>
             </div>
@@ -75,13 +77,17 @@ export const ProjectCard = ({
         </CardContent>
 
         {viewMode === "list" && (
-          <Button className="ml-auto">Voir le projet</Button>
+          <Button className="ml-auto" asChild>
+            <Link to="/projects/1">Voir le projet</Link>
+          </Button>
         )}
       </div>
 
       {viewMode === "grid" && (
         <CardFooter className="pt-4">
-          <Button className="w-full">Voir le projet</Button>
+          <Button className="w-full" asChild>
+            <Link to="/projects/1">Voir le projet</Link>
+          </Button>
         </CardFooter>
       )}
     </Card>

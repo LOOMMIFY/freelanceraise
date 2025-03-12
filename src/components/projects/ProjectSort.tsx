@@ -17,6 +17,7 @@ export const ProjectSort = () => {
         <SelectItem value="newest">Plus récents</SelectItem>
         <SelectItem value="budget-high">Budget le plus élevé</SelectItem>
         <SelectItem value="deadline">Date limite proche</SelectItem>
+        <SelectItem value="proposals-low">Moins de propositions</SelectItem>
       </SelectContent>
     </Select>
   );
