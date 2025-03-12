@@ -40,7 +40,7 @@ export const Navbar = () => {
           </Link>
           
           <nav className="ml-10 hidden md:flex space-x-1">
-            <NavLink to="/projects" label="Projets" active={location.pathname === "/projects"} />
+            <NavLink to="/projects" label="Projets" active={location.pathname.startsWith("/projects")} />
             <NavLink to="/freelancers" label="Freelancers" active={location.pathname === "/freelancers"} />
             <NavLink to="/services" label="Services" active={location.pathname === "/services"} />
             <NavLink to="/how-it-works" label="Comment ça marche" active={location.pathname === "/how-it-works"} />
