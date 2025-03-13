@@ -6,7 +6,14 @@ import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectFilters } from "@/components/projects/ProjectFilters";
 import { ProjectSort } from "@/components/projects/ProjectSort";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, List } from "lucide-react";
+import { 
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetHeader
+} from "@/components/ui/sheet";
+import { Filter, LayoutGrid, List } from "lucide-react";
 
 // Sample projects data
 const PROJECTS = [
@@ -83,12 +90,36 @@ const Projects = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Filters - Now in a vertical layout */}
-            <div className="lg:col-span-3">
+            {/* Filters - Vertical layout (desktop) / Sheet (mobile) */}
+            <div className="lg:col-span-3 hidden lg:block">
               <div className="bg-white rounded-lg border p-4 sticky top-28">
-                <h2 className="font-medium text-lg mb-4">Filtres</h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="font-medium text-lg">Filtres</h2>
+                  <Button variant="ghost" size="sm" className="text-primary">
+                    Réinitialiser
+                  </Button>
+                </div>
                 <ProjectFilters />
               </div>
+            </div>
+            
+            {/* Mobile filter button */}
+            <div className="fixed bottom-6 right-6 z-50 lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button className="rounded-full shadow-lg h-14 w-14 p-0">
+                    <Filter className="h-6 w-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-full sm:max-w-md overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>Filtres</SheetTitle>
+                  </SheetHeader>
+                  <div className="py-4">
+                    <ProjectFilters />
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
             
             {/* Main content area */}
