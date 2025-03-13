@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
@@ -8,9 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin, Star, MessageSquare, Calendar, Briefcase, CheckCircle } from "lucide-react";
+import { MapPin, Star, MessageSquare, Calendar, Briefcase, CheckCircle, X } from "lucide-react";
 
-// Sample freelancer data - In a real app this would come from an API
 const FREELANCER = {
   id: 1,
   name: "Sophie Dubois",
@@ -112,7 +110,6 @@ const FreelancerProfile = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState("profil");
   
-  // Get initials for avatar fallback
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -127,7 +124,6 @@ const FreelancerProfile = () => {
       
       <main className="flex-1 pt-28 pb-16">
         <div className="container">
-          {/* Profile Header */}
           <div className="bg-white rounded-lg border shadow-sm overflow-hidden mb-8">
             <div className="relative">
               <div className="h-48 bg-gradient-to-r from-[#8F3985] to-[#25283D]"></div>
@@ -183,7 +179,6 @@ const FreelancerProfile = () => {
             </div>
           </div>
           
-          {/* Profile Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
             <TabsList className="bg-white border w-full justify-start rounded-lg p-0 h-auto">
               <TabsTrigger 
@@ -212,11 +207,9 @@ const FreelancerProfile = () => {
               </TabsTrigger>
             </TabsList>
             
-            {/* Profile Tab */}
             <TabsContent value="profil" className="space-y-8 mt-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="md:col-span-2 space-y-8">
-                  {/* Bio Section */}
                   <Card>
                     <CardHeader>
                       <CardTitle>À propos</CardTitle>
@@ -226,7 +219,6 @@ const FreelancerProfile = () => {
                     </CardContent>
                   </Card>
                   
-                  {/* Skills Section */}
                   <Card>
                     <CardHeader>
                       <CardTitle>Compétences</CardTitle>
@@ -240,7 +232,6 @@ const FreelancerProfile = () => {
                     </CardContent>
                   </Card>
                   
-                  {/* Education Section */}
                   <Card>
                     <CardHeader>
                       <CardTitle>Formation</CardTitle>
@@ -259,7 +250,6 @@ const FreelancerProfile = () => {
                 </div>
                 
                 <div className="space-y-8">
-                  {/* Info Card */}
                   <Card>
                     <CardHeader>
                       <CardTitle>Informations</CardTitle>
@@ -302,7 +292,6 @@ const FreelancerProfile = () => {
               </div>
             </TabsContent>
             
-            {/* Portfolio Tab */}
             <TabsContent value="portfolio" className="space-y-8 mt-8">
               <h2 className="text-2xl font-bold mb-4">Projets récents</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -326,7 +315,6 @@ const FreelancerProfile = () => {
               </div>
             </TabsContent>
             
-            {/* Services Tab */}
             <TabsContent value="services" className="space-y-8 mt-8">
               <h2 className="text-2xl font-bold mb-4">Services proposés</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -354,7 +342,6 @@ const FreelancerProfile = () => {
               </div>
             </TabsContent>
             
-            {/* Reviews Tab */}
             <TabsContent value="avis" className="space-y-8 mt-8">
               <div className="flex items-center gap-4 mb-6">
                 <h2 className="text-2xl font-bold">Avis clients</h2>
