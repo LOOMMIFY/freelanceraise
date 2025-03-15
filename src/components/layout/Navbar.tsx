@@ -1,8 +1,8 @@
 
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Search, Bell, LogOut, Settings, User } from "lucide-react";
+import { Menu, X, Search, Bell, LogOut, Settings, User, Home, Briefcase, Mail, Users, HelpCircle, Info, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,6 +18,7 @@ import {
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
 
   // Add scroll event listener
@@ -30,6 +31,11 @@ export const Navbar = () => {
       }
     });
   }
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <header
@@ -47,38 +53,63 @@ export const Navbar = () => {
           </Link>
           
           <nav className="ml-10 hidden md:flex space-x-1">
-            <NavLink to="/" label="Accueil" active={location.pathname === "/"} />
-            <NavLink to="/projects" label="Projets" active={location.pathname.startsWith("/projects")} />
+            {/* Left Menu - Common for all users */}
+            <NavLink to="/" label="Accueil" icon={<Home className="h-4 w-4" />} active={location.pathname === "/"} />
+            <NavLink to="/projects" label="Offres/Propositions" icon={<Briefcase className="h-4 w-4" />} active={location.pathname.startsWith("/projects")} />
             
-            {isAuthenticated && user?.role === "business" && (
+            {isAuthenticated && (
               <NavLink 
-                to="/dashboard/post-project" 
-                label="Publier un Projet" 
-                active={location.pathname === "/dashboard/post-project"} 
+                to="/freelancers" 
+                label="Freelance" 
+                icon={<Users className="h-4 w-4" />}
+                active={location.pathname.startsWith("/freelancers")} 
               />
             )}
             
-            {isAuthenticated && user?.role === "freelancer" && (
-              <NavLink 
-                to="/dashboard/freelancer" 
-                label="Mon Profil" 
-                active={location.pathname === "/dashboard/freelancer"} 
-              />
-            )}
+            <NavLink 
+              to="/how-it-works" 
+              label="Comment ça marche" 
+              icon={<HelpCircle className="h-4 w-4" />}
+              active={location.pathname === "/how-it-works"} 
+            />
+            <NavLink 
+              to="/about" 
+              label="À propos" 
+              icon={<Info className="h-4 w-4" />}
+              active={location.pathname === "/about"} 
+            />
           </nav>
         </div>
         
         <div className="flex items-center space-x-4">
           {isAuthenticated ? (
-            <>
-              <Button variant="ghost" size="icon" className="text-loommify-primary">
-                <Search className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-loommify-primary relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-loommify-secondary rounded-full"></span>
+            <div className="flex items-center space-x-4">
+              {/* Right Menu - For Business Users */}
+              {user?.role === "business" && (
+                <Button asChild className="hidden md:flex">
+                  <Link to="/dashboard/post-project">
+                    <Send className="mr-2 h-4 w-4" />
+                    Soumettre une offre
+                  </Link>
+                </Button>
+              )}
+              
+              {/* Messages Button */}
+              <Button variant="ghost" size="icon" className="text-loommify-primary" asChild>
+                <Link to="/messages">
+                  <Mail className="h-5 w-5" />
+                </Link>
               </Button>
               
+              {/* Notifications Button */}
+              <Button variant="ghost" size="icon" className="text-loommify-primary relative" asChild>
+                <Link to="/notifications">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-loommify-secondary rounded-full"></span>
+                </Link>
+              </Button>
+              
+              {/* Profile Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-9 w-9 rounded-full">
@@ -103,13 +134,13 @@ export const Navbar = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Déconnexion</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </>
+            </div>
           ) : (
             <div className="hidden md:flex items-center space-x-4">
               <Button variant="ghost" asChild>
@@ -121,6 +152,7 @@ export const Navbar = () => {
             </div>
           )}
           
+          {/* Mobile Menu */}
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -141,26 +173,33 @@ export const Navbar = () => {
                   </div>
                   
                   <nav className="flex flex-col space-y-4 py-8">
-                    <MobileNavLink to="/" label="Accueil" />
-                    <MobileNavLink to="/projects" label="Projets" />
+                    {/* Mobile Left Menu - Common for all users */}
+                    <MobileNavLink to="/" label="Accueil" icon={<Home className="h-5 w-5 mr-2" />} />
+                    <MobileNavLink to="/projects" label="Offres/Propositions" icon={<Briefcase className="h-5 w-5 mr-2" />} />
                     
+                    {isAuthenticated && (
+                      <MobileNavLink to="/freelancers" label="Freelance" icon={<Users className="h-5 w-5 mr-2" />} />
+                    )}
+                    
+                    <MobileNavLink to="/how-it-works" label="Comment ça marche" icon={<HelpCircle className="h-5 w-5 mr-2" />} />
+                    <MobileNavLink to="/about" label="À propos" icon={<Info className="h-5 w-5 mr-2" />} />
+                    
+                    {/* Mobile Right Menu - Authenticated Users */}
                     {isAuthenticated ? (
                       <>
                         {user?.role === "business" && (
-                          <MobileNavLink to="/dashboard/post-project" label="Publier un Projet" />
+                          <MobileNavLink to="/dashboard/post-project" label="Soumettre une offre" icon={<Send className="h-5 w-5 mr-2" />} />
                         )}
                         
-                        {user?.role === "freelancer" && (
-                          <MobileNavLink to="/dashboard/freelancer" label="Mon Profil" />
-                        )}
-                        
-                        <MobileNavLink to="/dashboard" label="Mon Compte" />
-                        <MobileNavLink to="/dashboard/settings" label="Paramètres" />
+                        <MobileNavLink to="/messages" label="Messages" icon={<Mail className="h-5 w-5 mr-2" />} />
+                        <MobileNavLink to="/notifications" label="Notifications" icon={<Bell className="h-5 w-5 mr-2" />} />
+                        <MobileNavLink to="/dashboard" label="Mon Compte" icon={<User className="h-5 w-5 mr-2" />} />
+                        <MobileNavLink to="/dashboard/settings" label="Paramètres" icon={<Settings className="h-5 w-5 mr-2" />} />
                         
                         <Button 
                           variant="outline" 
                           className="w-full mt-4 text-red-500 border-red-500/20 hover:bg-red-500/10"
-                          onClick={logout}
+                          onClick={handleLogout}
                         >
                           <LogOut className="mr-2 h-4 w-4" />
                           Déconnexion
@@ -191,27 +230,30 @@ interface NavLinkProps {
   to: string;
   label: string;
   active?: boolean;
+  icon?: React.ReactNode;
 }
 
-const NavLink = ({ to, label, active }: NavLinkProps) => (
+const NavLink = ({ to, label, icon, active }: NavLinkProps) => (
   <Link
     to={to}
     className={cn(
-      "px-4 py-2 rounded-md text-sm font-medium transition-colors",
+      "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center",
       active 
         ? "text-loommify-primary bg-loommify-primary/10" 
         : "text-foreground hover:text-loommify-primary hover:bg-loommify-primary/5"
     )}
   >
+    {icon && <span className="mr-2">{icon}</span>}
     {label}
   </Link>
 );
 
-const MobileNavLink = ({ to, label }: NavLinkProps) => (
+const MobileNavLink = ({ to, label, icon }: NavLinkProps) => (
   <Link
     to={to}
-    className="px-2 py-3 text-lg font-medium hover:text-loommify-primary transition-colors"
+    className="px-2 py-3 text-lg font-medium hover:text-loommify-primary transition-colors flex items-center"
   >
+    {icon}
     {label}
   </Link>
 );

@@ -3,9 +3,10 @@ import { useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { ProjectFilters } from "@/components/projects/ProjectFilters";
+import { ProjectFilters, ProjectFiltersState } from "@/components/projects/ProjectFilters";
 import { ProjectSort } from "@/components/projects/ProjectSort";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   Sheet,
   SheetTrigger,
@@ -13,7 +14,7 @@ import {
   SheetTitle,
   SheetHeader
 } from "@/components/ui/sheet";
-import { Filter, LayoutGrid, List } from "lucide-react";
+import { Filter, LayoutGrid, List, Search } from "lucide-react";
 
 // Sample projects data
 const PROJECTS = [
@@ -25,6 +26,8 @@ const PROJECTS = [
     location: "Paris, France",
     proposals: 3,
     company: { name: "Tech Solutions", verified: true },
+    category: ["frontend", "backend"],
+    tags: ["react", "node"]
   },
   {
     id: 2,
@@ -34,6 +37,8 @@ const PROJECTS = [
     location: "Lyon, France",
     proposals: 7,
     company: { name: "StartUp Innovante", verified: true },
+    category: ["webdesign"],
+    tags: ["illustrator", "photoshop"]
   },
   {
     id: 3,
@@ -43,6 +48,8 @@ const PROJECTS = [
     location: "À distance",
     proposals: 12,
     company: { name: "Marketing Digital", verified: false },
+    category: ["content"],
+    tags: ["seo", "writing"]
   },
   {
     id: 4,
@@ -52,6 +59,8 @@ const PROJECTS = [
     location: "Bordeaux, France",
     proposals: 5,
     company: { name: "AppFactory", verified: true },
+    category: ["mobile"],
+    tags: ["swift", "ios"]
   },
   {
     id: 5,
@@ -61,6 +70,8 @@ const PROJECTS = [
     location: "À distance",
     proposals: 9,
     company: { name: "Social Media Pro", verified: false },
+    category: ["marketing"],
+    tags: ["social media", "content"]
   },
   {
     id: 6,
@@ -70,11 +81,93 @@ const PROJECTS = [
     location: "Toulouse, France",
     proposals: 4,
     company: { name: "Web Agency Plus", verified: true },
+    category: ["cms", "integrator"],
+    tags: ["wordpress", "woocommerce"]
   },
 ];
 
 const Projects = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [filteredProjects, setFilteredProjects] = useState(PROJECTS);
+  const [activeFilters, setActiveFilters] = useState<ProjectFiltersState | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleFilterChange = (filters: ProjectFiltersState) => {
+    setActiveFilters(filters);
+    
+    // Apply filters to projects
+    let filtered = [...PROJECTS];
+    
+    // Apply search filter
+    if (filters.search) {
+      filtered = filtered.filter(project => 
+        project.title.toLowerCase().includes(filters.search.toLowerCase())
+      );
+    }
+    
+    // Apply category filter
+    if (filters.category.length > 0) {
+      filtered = filtered.filter(project => 
+        project.category.some(cat => filters.category.includes(cat))
+      );
+    }
+    
+    // Apply speciality/tags filter
+    if (filters.speciality.length > 0) {
+      filtered = filtered.filter(project => 
+        project.tags.some(tag => filters.speciality.includes(tag))
+      );
+    }
+    
+    // Apply budget filter
+    const minBudget = filters.budgetRange[0] * 50; // Convert slider value to actual budget
+    const maxBudget = filters.budgetRange[1] * 50;
+    
+    if (minBudget > 0 || maxBudget < 5000) {
+      filtered = filtered.filter(project => 
+        project.budget.max >= minBudget && project.budget.min <= maxBudget
+      );
+    }
+    
+    // Apply location filter
+    if (filters.location) {
+      filtered = filtered.filter(project => 
+        project.location.toLowerCase().includes(filters.location.toLowerCase())
+      );
+    }
+    
+    // Apply remote only filter
+    if (filters.remoteOnly) {
+      filtered = filtered.filter(project => 
+        project.location.toLowerCase().includes("à distance")
+      );
+    }
+    
+    // Apply sorting
+    switch (filters.sortBy) {
+      case "budget-high":
+        filtered.sort((a, b) => b.budget.max - a.budget.max);
+        break;
+      case "proposals-low":
+        filtered.sort((a, b) => a.proposals - b.proposals);
+        break;
+      // For other sort options, we would need more data
+      // For now, leave newest as default (no change)
+      default:
+        break;
+    }
+    
+    setFilteredProjects(filtered);
+  };
+
+  const handleSearch = () => {
+    if (activeFilters) {
+      handleFilterChange({
+        ...activeFilters,
+        search: searchTerm
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -95,11 +188,8 @@ const Projects = () => {
               <div className="bg-white rounded-lg border p-4 sticky top-28">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="font-medium text-lg">Filtres</h2>
-                  <Button variant="ghost" size="sm" className="text-primary">
-                    Réinitialiser
-                  </Button>
                 </div>
-                <ProjectFilters />
+                <ProjectFilters onFilterChange={handleFilterChange} />
               </div>
             </div>
             
@@ -116,7 +206,7 @@ const Projects = () => {
                     <SheetTitle>Filtres</SheetTitle>
                   </SheetHeader>
                   <div className="py-4">
-                    <ProjectFilters />
+                    <ProjectFilters onFilterChange={handleFilterChange} />
                   </div>
                 </SheetContent>
               </Sheet>
@@ -127,10 +217,28 @@ const Projects = () => {
               <div className="bg-white rounded-lg border p-4 mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex-1">
-                    <h2 className="font-medium">{PROJECTS.length} projets disponibles</h2>
+                    <h2 className="font-medium">{filteredProjects.length} projets disponibles</h2>
                   </div>
                   
                   <div className="flex items-center gap-4 w-full sm:w-auto">
+                    <div className="hidden md:flex relative flex-1 max-w-xs">
+                      <Input
+                        placeholder="Rechercher..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pr-10"
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="absolute right-0 top-0 h-full"
+                        onClick={handleSearch}
+                      >
+                        <Search className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    
                     <div className="flex-1 sm:flex-initial">
                       <ProjectSort />
                     </div>
@@ -157,43 +265,52 @@ const Projects = () => {
                 </div>
               </div>
               
-              <div className={viewMode === "grid" 
-                ? "grid grid-cols-1 md:grid-cols-2 gap-6" 
-                : "space-y-6"
-              }>
-                {PROJECTS.map((project) => (
-                  <ProjectCard 
-                    key={project.id}
-                    title={project.title}
-                    budget={project.budget}
-                    estimatedTime={project.estimatedTime}
-                    location={project.location}
-                    proposals={project.proposals}
-                    company={project.company}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
+              {filteredProjects.length > 0 ? (
+                <div className={viewMode === "grid" 
+                  ? "grid grid-cols-1 md:grid-cols-2 gap-6" 
+                  : "space-y-6"
+                }>
+                  {filteredProjects.map((project) => (
+                    <ProjectCard 
+                      key={project.id}
+                      title={project.title}
+                      budget={project.budget}
+                      estimatedTime={project.estimatedTime}
+                      location={project.location}
+                      proposals={project.proposals}
+                      company={project.company}
+                      viewMode={viewMode}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-white rounded-lg border">
+                  <h3 className="text-lg font-medium mb-2">Aucun projet ne correspond à vos critères</h3>
+                  <p className="text-muted-foreground">Essayez de modifier vos filtres pour voir plus de résultats.</p>
+                </div>
+              )}
               
-              <div className="mt-10 flex justify-center">
-                <nav className="flex items-center gap-1">
-                  <Button variant="outline" size="icon" disabled>
-                    &lt;
-                  </Button>
-                  <Button variant="default" size="icon">
-                    1
-                  </Button>
-                  <Button variant="outline" size="icon">
-                    2
-                  </Button>
-                  <Button variant="outline" size="icon">
-                    3
-                  </Button>
-                  <Button variant="outline" size="icon">
-                    &gt;
-                  </Button>
-                </nav>
-              </div>
+              {filteredProjects.length > 0 && (
+                <div className="mt-10 flex justify-center">
+                  <nav className="flex items-center gap-1">
+                    <Button variant="outline" size="icon" disabled>
+                      &lt;
+                    </Button>
+                    <Button variant="default" size="icon">
+                      1
+                    </Button>
+                    <Button variant="outline" size="icon">
+                      2
+                    </Button>
+                    <Button variant="outline" size="icon">
+                      3
+                    </Button>
+                    <Button variant="outline" size="icon">
+                      &gt;
+                    </Button>
+                  </nav>
+                </div>
+              )}
             </div>
           </div>
         </div>

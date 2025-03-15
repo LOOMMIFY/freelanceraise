@@ -7,9 +7,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const ProjectSort = () => {
+interface ProjectSortProps {
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+export const ProjectSort = ({ value = "newest", onChange }: ProjectSortProps) => {
   return (
-    <Select defaultValue="newest">
+    <Select 
+      defaultValue={value} 
+      onValueChange={(newValue) => {
+        if (onChange) onChange(newValue);
+      }}
+    >
       <SelectTrigger className="w-[200px]">
         <SelectValue placeholder="Trier par" />
       </SelectTrigger>
