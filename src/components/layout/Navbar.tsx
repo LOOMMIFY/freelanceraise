@@ -49,8 +49,6 @@ export const Navbar = () => {
           <nav className="ml-10 hidden md:flex space-x-1">
             <NavLink to="/" label="Accueil" active={location.pathname === "/"} />
             <NavLink to="/projects" label="Projets" active={location.pathname.startsWith("/projects")} />
-            <NavLink to="/freelancers" label="Freelancers" active={location.pathname.startsWith("/freelancers")} />
-            <NavLink to="/services" label="Services" active={location.pathname.startsWith("/services")} />
             
             {isAuthenticated && user?.role === "business" && (
               <NavLink 
@@ -61,18 +59,11 @@ export const Navbar = () => {
             )}
             
             {isAuthenticated && user?.role === "freelancer" && (
-              <>
-                <NavLink 
-                  to="/dashboard/freelancer" 
-                  label="Mon Profil" 
-                  active={location.pathname === "/dashboard/freelancer"} 
-                />
-                <NavLink 
-                  to="/dashboard/services" 
-                  label="Mes Services" 
-                  active={location.pathname === "/dashboard/services"} 
-                />
-              </>
+              <NavLink 
+                to="/dashboard/freelancer" 
+                label="Mon Profil" 
+                active={location.pathname === "/dashboard/freelancer"} 
+              />
             )}
           </nav>
         </div>
@@ -152,8 +143,6 @@ export const Navbar = () => {
                   <nav className="flex flex-col space-y-4 py-8">
                     <MobileNavLink to="/" label="Accueil" />
                     <MobileNavLink to="/projects" label="Projets" />
-                    <MobileNavLink to="/freelancers" label="Freelancers" />
-                    <MobileNavLink to="/services" label="Services" />
                     
                     {isAuthenticated ? (
                       <>
@@ -162,10 +151,7 @@ export const Navbar = () => {
                         )}
                         
                         {user?.role === "freelancer" && (
-                          <>
-                            <MobileNavLink to="/dashboard/freelancer" label="Mon Profil" />
-                            <MobileNavLink to="/dashboard/services" label="Mes Services" />
-                          </>
+                          <MobileNavLink to="/dashboard/freelancer" label="Mon Profil" />
                         )}
                         
                         <MobileNavLink to="/dashboard" label="Mon Compte" />
