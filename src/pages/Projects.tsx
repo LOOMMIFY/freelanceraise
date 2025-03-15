@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ProjectCard } from "@/components/projects/ProjectCard";
@@ -15,6 +15,9 @@ import {
   SheetHeader
 } from "@/components/ui/sheet";
 import { Filter, LayoutGrid, List, Search } from "lucide-react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 // Sample projects data
 const PROJECTS = [
@@ -91,6 +94,13 @@ const Projects = () => {
   const [filteredProjects, setFilteredProjects] = useState(PROJECTS);
   const [activeFilters, setActiveFilters] = useState<ProjectFiltersState | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const { isAuthenticated } = useAuth();
+
+  // Redirect if user is not authenticated
+  if (!isAuthenticated) {
+    toast.error("Vous devez être connecté pour accéder aux Offres.");
+    return <Navigate to="/login" replace />;
+  }
 
   const handleFilterChange = (filters: ProjectFiltersState) => {
     setActiveFilters(filters);
@@ -176,7 +186,7 @@ const Projects = () => {
       <main className="flex-1 pt-28 pb-16">
         <div className="container">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Projets disponibles</h1>
+            <h1 className="text-3xl font-bold mb-2">Offres disponibles</h1>
             <p className="text-muted-foreground">
               Trouvez des opportunités qui correspondent à vos compétences et proposez vos services
             </p>
@@ -217,7 +227,7 @@ const Projects = () => {
               <div className="bg-white rounded-lg border p-4 mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex-1">
-                    <h2 className="font-medium">{filteredProjects.length} projets disponibles</h2>
+                    <h2 className="font-medium">{filteredProjects.length} offres disponibles</h2>
                   </div>
                   
                   <div className="flex items-center gap-4 w-full sm:w-auto">
@@ -285,7 +295,7 @@ const Projects = () => {
                 </div>
               ) : (
                 <div className="text-center py-12 bg-white rounded-lg border">
-                  <h3 className="text-lg font-medium mb-2">Aucun projet ne correspond à vos critères</h3>
+                  <h3 className="text-lg font-medium mb-2">Aucune offre ne correspond à vos critères</h3>
                   <p className="text-muted-foreground">Essayez de modifier vos filtres pour voir plus de résultats.</p>
                 </div>
               )}

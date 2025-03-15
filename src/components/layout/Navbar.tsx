@@ -55,7 +55,7 @@ export const Navbar = () => {
           <nav className="ml-10 hidden md:flex space-x-1">
             {/* Left Menu - Common for all users */}
             <NavLink to="/" label="Accueil" icon={<Home className="h-4 w-4" />} active={location.pathname === "/"} />
-            <NavLink to="/projects" label="Offres/Propositions" icon={<Briefcase className="h-4 w-4" />} active={location.pathname.startsWith("/projects")} />
+            <NavLink to="/projects" label="Offres" icon={<Briefcase className="h-4 w-4" />} active={location.pathname.startsWith("/projects")} />
             
             {isAuthenticated && (
               <NavLink 
@@ -175,7 +175,7 @@ export const Navbar = () => {
                   <nav className="flex flex-col space-y-4 py-8">
                     {/* Mobile Left Menu - Common for all users */}
                     <MobileNavLink to="/" label="Accueil" icon={<Home className="h-5 w-5 mr-2" />} />
-                    <MobileNavLink to="/projects" label="Offres/Propositions" icon={<Briefcase className="h-5 w-5 mr-2" />} />
+                    <MobileNavLink to="/projects" label="Offres" icon={<Briefcase className="h-5 w-5 mr-2" />} />
                     
                     {isAuthenticated && (
                       <MobileNavLink to="/freelancers" label="Freelance" icon={<Users className="h-5 w-5 mr-2" />} />

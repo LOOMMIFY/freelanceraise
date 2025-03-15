@@ -43,6 +43,7 @@ const App = () => (
             <Route path="/freelancers/:id" element={<Navigate to="/projects" replace />} />
             <Route path="/services" element={<Navigate to="/projects" replace />} />
             <Route path="/services/:id" element={<Navigate to="/projects" replace />} />
+            <Route path="/offres" element={<Navigate to="/projects" replace />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
