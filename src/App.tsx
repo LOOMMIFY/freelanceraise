@@ -16,6 +16,8 @@ import AboutPage from "./pages/AboutPage";
 import HowItWorks from "./pages/HowItWorks";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
+import Freelance from "./pages/Freelance";
+import FreelancerDetail from "./pages/FreelancerDetail";
 
 const queryClient = new QueryClient();
 
@@ -37,10 +39,12 @@ const App = () => (
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/freelance" element={<Freelance />} />
+            <Route path="/freelance/:id" element={<FreelancerDetail />} />
             
             {/* Redirect old routes to projects */}
-            <Route path="/freelancers" element={<Navigate to="/projects" replace />} />
-            <Route path="/freelancers/:id" element={<Navigate to="/projects" replace />} />
+            <Route path="/freelancers" element={<Navigate to="/freelance" replace />} />
+            <Route path="/freelancers/:id" element={<Navigate to="/freelance" replace />} />
             <Route path="/services" element={<Navigate to="/projects" replace />} />
             <Route path="/services/:id" element={<Navigate to="/projects" replace />} />
             <Route path="/offres" element={<Navigate to="/projects" replace />} />
