@@ -1,32 +1,66 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, AtSign, Lock } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, AtSign, Lock, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login, isLoading } = useAuth();
+  const { toast } = useToast();
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
   });
+  const [formError, setFormError] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormError("");
   };
 
   const handleCheckboxChange = (checked: boolean) => {
     setFormData((prev) => ({ ...prev, rememberMe: checked }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login submitted with:", formData);
-    // Implementation for login would go here
+    
+    // Basic validation
+    if (!formData.email) {
+      setFormError("Veuillez entrer votre email");
+      return;
+    }
+    
+    if (!formData.password) {
+      setFormError("Veuillez entrer votre mot de passe");
+      return;
+    }
+    
+    try {
+      await login(formData.email, formData.password);
+      toast({
+        title: "Connexion réussie",
+        description: "Bienvenue sur Loommify !",
+      });
+      navigate("/"); // Redirect to home page after login
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Une erreur est survenue";
+      setFormError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "Erreur de connexion",
+        description: errorMessage,
+      });
+    }
   };
 
   return (
@@ -53,6 +87,13 @@ const Login = () => {
               </p>
             </div>
 
+            {formError && (
+              <div className="mb-6 p-4 rounded-lg bg-red-50 text-red-600 text-sm flex items-start">
+                <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+                <span>{formError}</span>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -66,6 +107,7 @@ const Login = () => {
                     placeholder="votre@email.fr"
                     className="pl-10"
                     required
+                    disabled={isLoading}
                   />
                   <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 </div>
@@ -88,6 +130,7 @@ const Login = () => {
                     placeholder="••••••••"
                     className="pl-10"
                     required
+                    disabled={isLoading}
                   />
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 </div>
@@ -97,16 +140,41 @@ const Login = () => {
                 <Checkbox 
                   id="rememberMe" 
                   checked={formData.rememberMe} 
-                  onCheckedChange={handleCheckboxChange} 
+                  onCheckedChange={handleCheckboxChange}
+                  disabled={isLoading}
                 />
                 <Label htmlFor="rememberMe" className="text-sm cursor-pointer">
                   Se souvenir de moi
                 </Label>
               </div>
 
-              <Button type="submit" className="w-full bg-loommify-primary hover:bg-loommify-primary/90">
-                Se connecter
+              <Button 
+                type="submit" 
+                className="w-full bg-loommify-primary hover:bg-loommify-primary/90"
+                disabled={isLoading}
+              >
+                {isLoading ? "Connexion en cours..." : "Se connecter"}
               </Button>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-muted"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-muted-foreground">Ou continuer avec</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Button variant="outline" type="button" className="w-full" disabled={isLoading}>
+                  <img src="/google.svg" alt="Google" className="h-4 w-4 mr-2" />
+                  Google
+                </Button>
+                <Button variant="outline" type="button" className="w-full" disabled={isLoading}>
+                  <img src="/linkedin.svg" alt="LinkedIn" className="h-4 w-4 mr-2" />
+                  LinkedIn
+                </Button>
+              </div>
             </form>
 
             <div className="mt-6 text-center">

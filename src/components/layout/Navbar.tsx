@@ -2,14 +2,23 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Search, Bell } from "lucide-react";
+import { Menu, X, Search, Bell, LogOut, Settings, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "@/context/AuthContext";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { user, isAuthenticated, logout } = useAuth();
 
   // Add scroll event listener
   if (typeof window !== "undefined") {
@@ -21,8 +30,6 @@ export const Navbar = () => {
       }
     });
   }
-
-  const isAuthenticated = false; // This would come from your auth context/state
 
   return (
     <header
@@ -40,10 +47,33 @@ export const Navbar = () => {
           </Link>
           
           <nav className="ml-10 hidden md:flex space-x-1">
+            <NavLink to="/" label="Accueil" active={location.pathname === "/"} />
             <NavLink to="/projects" label="Projets" active={location.pathname.startsWith("/projects")} />
-            <NavLink to="/freelancers" label="Freelancers" active={location.pathname === "/freelancers"} />
-            <NavLink to="/services" label="Services" active={location.pathname === "/services"} />
-            <NavLink to="/how-it-works" label="Comment ça marche" active={location.pathname === "/how-it-works"} />
+            <NavLink to="/freelancers" label="Freelancers" active={location.pathname.startsWith("/freelancers")} />
+            <NavLink to="/services" label="Services" active={location.pathname.startsWith("/services")} />
+            
+            {isAuthenticated && user?.role === "business" && (
+              <NavLink 
+                to="/dashboard/post-project" 
+                label="Publier un Projet" 
+                active={location.pathname === "/dashboard/post-project"} 
+              />
+            )}
+            
+            {isAuthenticated && user?.role === "freelancer" && (
+              <>
+                <NavLink 
+                  to="/dashboard/freelancer" 
+                  label="Mon Profil" 
+                  active={location.pathname === "/dashboard/freelancer"} 
+                />
+                <NavLink 
+                  to="/dashboard/services" 
+                  label="Mes Services" 
+                  active={location.pathname === "/dashboard/services"} 
+                />
+              </>
+            )}
           </nav>
         </div>
         
@@ -57,11 +87,37 @@ export const Navbar = () => {
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-loommify-secondary rounded-full"></span>
               </Button>
-              <Avatar className="h-9 w-9">
-                <AvatarFallback className="bg-loommify-primary/10 text-loommify-primary">
-                  JD
-                </AvatarFallback>
-              </Avatar>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                    <Avatar className="h-9 w-9">
+                      <AvatarFallback className="bg-loommify-primary/10 text-loommify-primary">
+                        {user?.name?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Mon Compte</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard/settings" className="cursor-pointer">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Paramètres</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Déconnexion</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <div className="hidden md:flex items-center space-x-4">
@@ -94,24 +150,47 @@ export const Navbar = () => {
                   </div>
                   
                   <nav className="flex flex-col space-y-4 py-8">
+                    <MobileNavLink to="/" label="Accueil" />
                     <MobileNavLink to="/projects" label="Projets" />
                     <MobileNavLink to="/freelancers" label="Freelancers" />
                     <MobileNavLink to="/services" label="Services" />
-                    <MobileNavLink to="/how-it-works" label="Comment ça marche" />
-                  </nav>
-                  
-                  <div className="mt-auto space-y-4 py-8">
-                    {!isAuthenticated && (
+                    
+                    {isAuthenticated ? (
                       <>
+                        {user?.role === "business" && (
+                          <MobileNavLink to="/dashboard/post-project" label="Publier un Projet" />
+                        )}
+                        
+                        {user?.role === "freelancer" && (
+                          <>
+                            <MobileNavLink to="/dashboard/freelancer" label="Mon Profil" />
+                            <MobileNavLink to="/dashboard/services" label="Mes Services" />
+                          </>
+                        )}
+                        
+                        <MobileNavLink to="/dashboard" label="Mon Compte" />
+                        <MobileNavLink to="/dashboard/settings" label="Paramètres" />
+                        
+                        <Button 
+                          variant="outline" 
+                          className="w-full mt-4 text-red-500 border-red-500/20 hover:bg-red-500/10"
+                          onClick={logout}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Déconnexion
+                        </Button>
+                      </>
+                    ) : (
+                      <div className="mt-auto space-y-4 py-4">
                         <Button variant="outline" className="w-full" asChild>
                           <Link to="/login">Se connecter</Link>
                         </Button>
                         <Button className="w-full" asChild>
                           <Link to="/signup">S'inscrire</Link>
                         </Button>
-                      </>
+                      </div>
                     )}
-                  </div>
+                  </nav>
                 </div>
               </SheetContent>
             </Sheet>

@@ -6,8 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SkillSelector } from "@/components/common/SkillSelector";
+import { useAuth } from "@/context/AuthContext";
 
-export const FreelancerSignupForm = () => {
+interface FreelancerSignupFormProps {
+  onSubmit: (formData: any) => void;
+}
+
+export const FreelancerSignupForm = ({ onSubmit }: FreelancerSignupFormProps) => {
+  const { signup, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -33,10 +39,28 @@ export const FreelancerSignupForm = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted with:", formData);
-    // Implementation for form submission would go here
+    
+    try {
+      // Submit form data to the auth system
+      await signup(
+        {
+          name: formData.fullName,
+          email: formData.email,
+          role: "freelancer",
+        }, 
+        formData.password
+      );
+      
+      // Call the parent's onSubmit handler with all form data
+      onSubmit({
+        ...formData,
+        profileImageUrl: formData.profileImage ? URL.createObjectURL(formData.profileImage) : null,
+      });
+    } catch (error) {
+      console.error("Signup failed:", error);
+    }
   };
 
   return (
@@ -54,6 +78,7 @@ export const FreelancerSignupForm = () => {
                 placeholder="Jean Dupont"
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
@@ -71,6 +96,7 @@ export const FreelancerSignupForm = () => {
                 placeholder="jean.dupont@exemple.fr"
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
               <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
@@ -90,6 +116,7 @@ export const FreelancerSignupForm = () => {
                 placeholder="••••••••"
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
@@ -107,6 +134,7 @@ export const FreelancerSignupForm = () => {
                 placeholder="+33 6 12 34 56 78"
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
@@ -127,6 +155,7 @@ export const FreelancerSignupForm = () => {
             onChange={handleInputChange}
             placeholder="https://monportfolio.fr, https://github.com/username"
             className="resize-none h-20"
+            disabled={isLoading}
           />
         </div>
 
@@ -151,13 +180,18 @@ export const FreelancerSignupForm = () => {
               accept="image/*"
               onChange={handleImageChange}
               className="max-w-sm"
+              disabled={isLoading}
             />
           </div>
         </div>
       </div>
 
-      <Button type="submit" className="w-full bg-loommify-primary hover:bg-loommify-primary/90">
-        Créer mon compte Freelance
+      <Button 
+        type="submit" 
+        className="w-full bg-loommify-primary hover:bg-loommify-primary/90"
+        disabled={isLoading}
+      >
+        {isLoading ? "Création du compte..." : "Créer mon compte Freelance"}
       </Button>
     </form>
   );

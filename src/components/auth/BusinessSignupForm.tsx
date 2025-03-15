@@ -7,15 +7,22 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { IndustrySelector } from "@/components/common/IndustrySelector";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 type BusinessFormMode = "create" | "join";
 
-export const BusinessSignupForm = () => {
+interface BusinessSignupFormProps {
+  onSubmit: (formData: any, mode: BusinessFormMode) => void;
+}
+
+export const BusinessSignupForm = ({ onSubmit }: BusinessSignupFormProps) => {
+  const { signup, isLoading } = useAuth();
   const [mode, setMode] = useState<BusinessFormMode>("create");
   const [formData, setFormData] = useState({
     businessName: "",
     siret: "",
     email: "",
+    password: "", // Added password field
     industries: [] as string[],
     website: "",
     token: "",
@@ -56,10 +63,28 @@ export const BusinessSignupForm = () => {
     setFormData((prev) => ({ ...prev, token: formatted }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted with:", { mode, ...formData });
-    // Implementation for form submission would go here
+    
+    try {
+      // Sign up with auth system
+      await signup(
+        {
+          name: mode === "create" ? formData.businessName : "Business User",
+          email: formData.email,
+          role: "business",
+        }, 
+        formData.password
+      );
+      
+      // Call the parent onSubmit with all form data
+      onSubmit({
+        ...formData,
+        profileImageUrl: formData.profileImage ? URL.createObjectURL(formData.profileImage) : null,
+      }, mode);
+    } catch (error) {
+      console.error("Business signup failed:", error);
+    }
   };
 
   return (
@@ -90,23 +115,58 @@ export const BusinessSignupForm = () => {
         </div>
 
         {mode === "join" ? (
-          <div className="space-y-2 py-4">
-            <Label htmlFor="token">Token d'entreprise</Label>
-            <div className="relative">
-              <Input
-                id="token"
-                name="token"
-                value={formData.token}
-                onChange={handleTokenChange}
-                placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
-                className="pl-10 font-mono tracking-wider"
-                required
-              />
-              <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email professionnel</Label>
+              <div className="relative">
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="vous@entreprise.fr"
+                  className="pl-10"
+                  required
+                  disabled={isLoading}
+                />
+                <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Entrez le token que votre administrateur vous a fourni
-            </p>
+            
+            <div className="space-y-2">
+              <Label htmlFor="password">Mot de passe</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="••••••••"
+                required
+                disabled={isLoading}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="token">Token d'entreprise</Label>
+              <div className="relative">
+                <Input
+                  id="token"
+                  name="token"
+                  value={formData.token}
+                  onChange={handleTokenChange}
+                  placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
+                  className="pl-10 font-mono tracking-wider"
+                  required
+                  disabled={isLoading}
+                />
+                <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Entrez le token que votre administrateur vous a fourni
+              </p>
+            </div>
           </div>
         ) : (
           <div className="space-y-4">
@@ -122,6 +182,7 @@ export const BusinessSignupForm = () => {
                     placeholder="Ma Société SAS"
                     className="pl-10"
                     required
+                    disabled={isLoading}
                   />
                   <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 </div>
@@ -135,6 +196,7 @@ export const BusinessSignupForm = () => {
                   onChange={handleInputChange}
                   placeholder="123 456 789 00012"
                   required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -151,9 +213,24 @@ export const BusinessSignupForm = () => {
                   placeholder="contact@masociete.fr"
                   className="pl-10"
                   required
+                  disabled={isLoading}
                 />
                 <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="password">Mot de passe</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="••••••••"
+                required
+                disabled={isLoading}
+              />
             </div>
 
             <div className="space-y-2">
@@ -172,6 +249,7 @@ export const BusinessSignupForm = () => {
                   onChange={handleInputChange}
                   placeholder="https://www.masociete.fr"
                   className="pl-10"
+                  disabled={isLoading}
                 />
                 <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               </div>
@@ -198,6 +276,7 @@ export const BusinessSignupForm = () => {
                   accept="image/*"
                   onChange={handleImageChange}
                   className="max-w-sm"
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -205,8 +284,12 @@ export const BusinessSignupForm = () => {
         )}
       </div>
 
-      <Button type="submit" className="w-full bg-loommify-primary hover:bg-loommify-primary/90">
-        {mode === "create" ? "Créer mon entreprise" : "Rejoindre l'entreprise"}
+      <Button 
+        type="submit" 
+        className="w-full bg-loommify-primary hover:bg-loommify-primary/90"
+        disabled={isLoading}
+      >
+        {isLoading ? "Création en cours..." : (mode === "create" ? "Créer mon entreprise" : "Rejoindre l'entreprise")}
       </Button>
     </form>
   );
