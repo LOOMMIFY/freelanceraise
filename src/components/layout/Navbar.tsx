@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -20,6 +21,7 @@ export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme } = useTheme();
 
   // Add scroll event listener
   if (typeof window !== "undefined") {
@@ -42,7 +44,7 @@ export const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-white/80 backdrop-blur-lg shadow-sm py-3"
+          ? "bg-white/80 dark:bg-black/50 backdrop-blur-lg shadow-sm py-3"
           : "bg-transparent py-5"
       )}
     >
@@ -128,7 +130,7 @@ export const Navbar = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/dashboard/settings" className="cursor-pointer">
+                    <Link to="/parametres" className="cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Paramètres</span>
                     </Link>
@@ -194,7 +196,7 @@ export const Navbar = () => {
                         <MobileNavLink to="/messages" label="Messages" icon={<Mail className="h-5 w-5 mr-2" />} />
                         <MobileNavLink to="/notifications" label="Notifications" icon={<Bell className="h-5 w-5 mr-2" />} />
                         <MobileNavLink to="/dashboard" label="Mon Compte" icon={<User className="h-5 w-5 mr-2" />} />
-                        <MobileNavLink to="/dashboard/settings" label="Paramètres" icon={<Settings className="h-5 w-5 mr-2" />} />
+                        <MobileNavLink to="/parametres" label="Paramètres" icon={<Settings className="h-5 w-5 mr-2" />} />
                         
                         <Button 
                           variant="outline" 

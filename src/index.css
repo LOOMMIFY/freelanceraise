@@ -36,6 +36,36 @@
     --radius: 0.75rem;
   }
 
+  .dark {
+    --background: 192 18% 10%;
+    --foreground: 187 100% 98%;
+
+    --card: 192 18% 12%;
+    --card-foreground: 187 100% 98%;
+
+    --popover: 192 18% 12%;
+    --popover-foreground: 187 100% 98%;
+
+    --primary: 187 53% 30%;
+    --primary-foreground: 187 100% 98%;
+
+    --secondary: 143 34% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 192 18% 18%;
+    --muted-foreground: 186 8% 70%;
+
+    --accent: 192 18% 18%;
+    --accent-foreground: 187 100% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 192 18% 20%;
+    --input: 192 18% 20%;
+    --ring: 187 53% 40%;
+  }
+
   @font-face {
     font-family: 'Gilroy';
     src: url('/fonts/Gilroy-Regular.woff2') format('woff2');
@@ -73,7 +103,7 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg;
+    @apply dark:bg-black/30 bg-white/80 backdrop-blur-xl border dark:border-white/10 border-white/20 shadow-lg;
   }
   
   .text-balance {
