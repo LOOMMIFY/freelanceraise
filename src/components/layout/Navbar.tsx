@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import { NotificationsPopover } from "@/components/notifications/NotificationsPopover";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -61,10 +61,10 @@ export const Navbar = () => {
             
             {isAuthenticated && (
               <NavLink 
-                to="/freelancers" 
+                to="/freelance" 
                 label="Freelance" 
                 icon={<Users className="h-4 w-4" />}
-                active={location.pathname.startsWith("/freelancers")} 
+                active={location.pathname.startsWith("/freelance")} 
               />
             )}
             
@@ -103,13 +103,10 @@ export const Navbar = () => {
                 </Link>
               </Button>
               
-              {/* Notifications Button */}
-              <Button variant="ghost" size="icon" className="text-loommify-primary relative" asChild>
-                <Link to="/notifications">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-loommify-secondary rounded-full"></span>
-                </Link>
-              </Button>
+              {/* Notifications Button with PopOver */}
+              <NotificationsPopover>
+                <Bell className="h-5 w-5" />
+              </NotificationsPopover>
               
               {/* Profile Dropdown */}
               <DropdownMenu>
@@ -180,7 +177,7 @@ export const Navbar = () => {
                     <MobileNavLink to="/projects" label="Offres" icon={<Briefcase className="h-5 w-5 mr-2" />} />
                     
                     {isAuthenticated && (
-                      <MobileNavLink to="/freelancers" label="Freelance" icon={<Users className="h-5 w-5 mr-2" />} />
+                      <MobileNavLink to="/freelance" label="Freelance" icon={<Users className="h-5 w-5 mr-2" />} />
                     )}
                     
                     <MobileNavLink to="/how-it-works" label="Comment ça marche" icon={<HelpCircle className="h-5 w-5 mr-2" />} />
