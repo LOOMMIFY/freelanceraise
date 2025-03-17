@@ -191,8 +191,10 @@ export const BusinessProfileContent = ({
               <CardTitle className="text-lg">Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full">
-                Modifier le profil entreprise
+              <Button asChild className="w-full">
+                <Link to="/dashboard/edit">
+                  Modifier le profil entreprise
+                </Link>
               </Button>
               <Button variant="outline" className="w-full">
                 Publier un projet
