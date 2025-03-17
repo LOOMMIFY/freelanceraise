@@ -20,6 +20,7 @@ import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import Freelance from "./pages/Freelance";
 import FreelancerDetail from "./pages/FreelancerDetail";
+import BusinessDetail from "./pages/BusinessDetail";
 import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/freelance" element={<Freelance />} />
                 <Route path="/freelance/:id" element={<FreelancerDetail />} />
+                <Route path="/entreprise/:id" element={<BusinessDetail />} />
                 <Route path="/parametres" element={<Settings />} />
                 
                 {/* Redirect old routes to projects */}
