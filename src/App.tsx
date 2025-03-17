@@ -22,6 +22,8 @@ import Freelance from "./pages/Freelance";
 import FreelancerDetail from "./pages/FreelancerDetail";
 import BusinessDetail from "./pages/BusinessDetail";
 import Settings from "./pages/Settings";
+import DashboardProfile from "./pages/dashboard/DashboardProfile";
+import DashboardProfileEdit from "./pages/dashboard/DashboardProfileEdit";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +51,10 @@ const App = () => (
                 <Route path="/freelance/:id" element={<FreelancerDetail />} />
                 <Route path="/entreprise/:id" element={<BusinessDetail />} />
                 <Route path="/parametres" element={<Settings />} />
+                
+                {/* Dashboard Routes */}
+                <Route path="/dashboard/profil" element={<DashboardProfile />} />
+                <Route path="/dashboard/profil/edit" element={<DashboardProfileEdit />} />
                 
                 {/* Redirect old routes to projects */}
                 <Route path="/freelancers" element={<Navigate to="/freelance" replace />} />
