@@ -7,7 +7,6 @@ import { StarRating } from "@/components/ui/star-rating";
 import { User } from "@/context/AuthContext";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 interface FreelancerProfileContentProps {
   user: User | null;
@@ -115,10 +114,8 @@ export const FreelancerProfileContent = ({
               <CardTitle className="text-lg">Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button asChild className="w-full">
-                <Link to="/dashboard/edit">
-                  Modifier mon profil
-                </Link>
+              <Button className="w-full">
+                Modifier mon profil
               </Button>
               <Button variant="outline" className="w-full">
                 Exporter mon CV

@@ -31,6 +31,11 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
       icon: <Home className="w-5 h-5" /> 
     },
     { 
+      label: 'Profil', 
+      path: '/dashboard/profil', 
+      icon: <User className="w-5 h-5" /> 
+    },
+    { 
       label: 'Messages', 
       path: '/messages', 
       icon: <MessageSquare className="w-5 h-5" /> 
@@ -118,7 +123,9 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
           {title && (
             <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">{title}</h1>
           )}
-          {children}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+            {children}
+          </div>
         </main>
       </div>
       

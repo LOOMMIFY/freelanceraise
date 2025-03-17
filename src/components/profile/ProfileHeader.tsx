@@ -2,7 +2,7 @@
 import { User } from '@/context/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Award, Building, User as UserIcon } from 'lucide-react';
+import { MapPin, Award, Briefcase, Building, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -71,7 +71,7 @@ export const ProfileHeader = ({
         <div className="w-full md:w-auto mt-4 md:mt-0">
           {isOwnProfile ? (
             <Button asChild>
-              <Link to="/dashboard/edit">
+              <Link to="/dashboard/profil/edit">
                 Modifier mon profil
               </Link>
             </Button>

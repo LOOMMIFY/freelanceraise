@@ -8,9 +8,9 @@ import {
   PopoverTrigger 
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNotifications, formatTimeAgo } from "@/context/NotificationsContext";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface NotificationsPopoverProps {
   children: React.ReactNode;
@@ -55,7 +55,7 @@ export const NotificationsPopover = ({ children }: NotificationsPopoverProps) =>
           )}
         </div>
         
-        <ScrollArea className="flex-1 max-h-[320px]">
+        <div className="overflow-y-auto max-h-[320px] flex-1">
           {notifications.length > 0 ? (
             <div className="divide-y">
               {notifications.map((notification) => (
@@ -103,7 +103,7 @@ export const NotificationsPopover = ({ children }: NotificationsPopoverProps) =>
               <p>Vous n'avez aucune notification</p>
             </div>
           )}
-        </ScrollArea>
+        </div>
         
         <div className="p-3 border-t text-center">
           <Button variant="ghost" size="sm" asChild className="w-full">
