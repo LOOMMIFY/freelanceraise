@@ -33,21 +33,21 @@ export function useUsers(searchQuery: string) {
           {
             id: 'f1',
             name: 'Sophie Martin',
-            avatar: '',
+            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
             role: 'freelancer',
             title: 'Développeuse Full-Stack',
           },
           {
             id: 'f2',
             name: 'Thomas Dubois',
-            avatar: '',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
             role: 'freelancer',
             title: 'Designer UX/UI',
           },
           {
             id: 'f3',
             name: 'Julie Lefebvre',
-            avatar: '',
+            avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
             role: 'freelancer',
             title: 'Rédactrice Web',
           },
@@ -57,19 +57,19 @@ export function useUsers(searchQuery: string) {
           {
             id: 'b1',
             name: 'TechCorp',
-            avatar: '',
+            avatar: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
             role: 'business',
           },
           {
             id: 'b2',
             name: 'DesignStudio',
-            avatar: '',
+            avatar: 'https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
             role: 'business',
           },
           {
             id: 'b3',
             name: 'MarketingPro',
-            avatar: '',
+            avatar: 'https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
             role: 'business',
           },
         ];

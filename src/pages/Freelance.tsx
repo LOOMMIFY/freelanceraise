@@ -32,106 +32,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-// Mock data for freelancers
-const MOCK_FREELANCERS = [
-  {
-    id: "1",
-    name: "Sophie Dupont",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    xp: 4325,
-    lastActive: "2023-10-05",
-    yearsExperience: 5,
-    skills: ["React", "TypeScript", "Node.js"],
-    responseTime: "Rapide",
-    completedProjects: 27,
-    rating: 4.8
-  },
-  {
-    id: "2",
-    name: "Thomas Martin",
-    avatar: "https://i.pravatar.cc/150?img=2",
-    xp: 3150,
-    lastActive: "2023-10-09",
-    yearsExperience: 3,
-    skills: ["Vue.js", "JavaScript", "PHP"],
-    responseTime: "Moyen",
-    completedProjects: 19,
-    rating: 4.5
-  },
-  {
-    id: "3",
-    name: "Julie Bernard",
-    avatar: "https://i.pravatar.cc/150?img=3",
-    xp: 5720,
-    lastActive: "2023-10-10",
-    yearsExperience: 7,
-    skills: ["Angular", "Java", "Spring Boot"],
-    responseTime: "Rapide",
-    completedProjects: 42,
-    rating: 4.9
-  },
-  {
-    id: "4",
-    name: "Alexandre Petit",
-    avatar: "https://i.pravatar.cc/150?img=4",
-    xp: 2890,
-    lastActive: "2023-10-07",
-    yearsExperience: 2,
-    skills: ["WordPress", "CSS", "JavaScript"],
-    responseTime: "Lent",
-    completedProjects: 15,
-    rating: 4.1
-  },
-  {
-    id: "5",
-    name: "Émilie Dubois",
-    avatar: "https://i.pravatar.cc/150?img=5",
-    xp: 6340,
-    lastActive: "2023-10-10",
-    yearsExperience: 8,
-    skills: ["Python", "Django", "React"],
-    responseTime: "Très rapide",
-    completedProjects: 54,
-    rating: 5.0
-  },
-  {
-    id: "6",
-    name: "Lucas Moreau",
-    avatar: "https://i.pravatar.cc/150?img=6",
-    xp: 3980,
-    lastActive: "2023-10-08",
-    yearsExperience: 4,
-    skills: ["UI/UX Design", "Figma", "Adobe XD"],
-    responseTime: "Moyen",
-    completedProjects: 31,
-    rating: 4.7
-  },
-  {
-    id: "7",
-    name: "Camille Lefebvre",
-    avatar: "https://i.pravatar.cc/150?img=7",
-    xp: 4570,
-    lastActive: "2023-10-09",
-    yearsExperience: 6,
-    skills: ["Swift", "iOS", "Flutter"],
-    responseTime: "Rapide",
-    completedProjects: 38,
-    rating: 4.6
-  },
-  {
-    id: "8",
-    name: "Antoine Rousseau",
-    avatar: "https://i.pravatar.cc/150?img=8",
-    xp: 3250,
-    lastActive: "2023-10-06",
-    yearsExperience: 3,
-    skills: ["Laravel", "PHP", "MySQL"],
-    responseTime: "Moyen",
-    completedProjects: 23,
-    rating: 4.3
-  }
-];
+import { getAllFreelancers, Freelancer } from "@/services/freelancerService";
 
 // Filter options for activity period
 const ACTIVITY_PERIODS = [
@@ -153,15 +54,15 @@ const FreelancePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const freelancersPerPage = 6;
 
-  // Fetch freelancers with React Query (using mock data for now)
+  // Fetch freelancers with React Query
   const { data: freelancers, isLoading } = useQuery({
     queryKey: ['freelancers', appliedFilters],
     queryFn: async () => {
-      // Simulate API call with delay
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Get all freelancers
+      const allFreelancers = await getAllFreelancers();
       
-      // Filter mock data based on applied filters
-      let results = [...MOCK_FREELANCERS];
+      // Filter based on applied filters
+      let results = [...allFreelancers];
       
       if (appliedFilters.search) {
         results = results.filter(freelancer => 
@@ -205,7 +106,7 @@ const FreelancePage = () => {
       
       return results;
     },
-    initialData: MOCK_FREELANCERS
+    initialData: [] as Freelancer[]
   });
 
   // Apply filters
