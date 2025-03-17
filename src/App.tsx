@@ -22,7 +22,7 @@ import Freelance from "./pages/Freelance";
 import FreelancerDetail from "./pages/FreelancerDetail";
 import BusinessDetail from "./pages/BusinessDetail";
 import Settings from "./pages/Settings";
-import DashboardProfile from "./pages/dashboard/DashboardProfile";
+import Dashboard from "./pages/dashboard/Dashboard";
 import DashboardProfileEdit from "./pages/dashboard/DashboardProfileEdit";
 
 const queryClient = new QueryClient();
@@ -53,8 +53,12 @@ const App = () => (
                 <Route path="/parametres" element={<Settings />} />
                 
                 {/* Dashboard Routes */}
-                <Route path="/dashboard/profil" element={<DashboardProfile />} />
-                <Route path="/dashboard/profil/edit" element={<DashboardProfileEdit />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/edit" element={<DashboardProfileEdit />} />
+                
+                {/* Redirect old dashboard profile route to the new dashboard */}
+                <Route path="/dashboard/profil" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/dashboard/profil/edit" element={<Navigate to="/dashboard/edit" replace />} />
                 
                 {/* Redirect old routes to projects */}
                 <Route path="/freelancers" element={<Navigate to="/freelance" replace />} />
