@@ -86,3 +86,30 @@
   width: 96px;
   height: 96px;
 }
+
+/* Theme-specific styles */
+.dark .form-error {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.icon-toggle {
+  transition: all 0.2s ease;
+}
+
+.icon-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Improved focus styles for all inputs */
+input:focus-visible, 
+button:focus-visible {
+  outline: 2px solid #8F3985;
+  outline-offset: 2px;
+}
+
+/* Dark mode specific input styling */
+.dark input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+

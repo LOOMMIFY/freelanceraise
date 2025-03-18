@@ -1,18 +1,22 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, AtSign, Lock, AlertCircle } from "lucide-react";
+import { ArrowLeft, AtSign, Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/lib/utils";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login, isLoading } = useAuth();
   const { toast } = useToast();
+  const { theme } = useTheme();
+  const [showPassword, setShowPassword] = useState(false);
   
   const [formData, setFormData] = useState({
     email: "",
@@ -29,6 +33,10 @@ const Login = () => {
 
   const handleCheckboxChange = (checked: boolean) => {
     setFormData((prev) => ({ ...prev, rememberMe: checked }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,7 +72,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-loommify-light">
+    <div className={cn(
+      "min-h-screen flex flex-col",
+      theme === "light" ? "bg-loommify-light" : "bg-background"
+    )}>
       {/* Header with back button */}
       <header className="pt-6 px-4">
         <div className="container mx-auto max-w-md">
@@ -79,7 +90,10 @@ const Login = () => {
 
       <main className="flex-1 flex flex-col items-center justify-center py-12 px-4">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-2xl shadow-lg border p-8 animate-scale-in">
+          <div className={cn(
+            "rounded-2xl shadow-lg border p-8 animate-scale-in",
+            theme === "light" ? "bg-white" : "bg-card"
+          )}>
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold mb-2">Connexion</h1>
               <p className="text-muted-foreground">
@@ -88,7 +102,7 @@ const Login = () => {
             </div>
 
             {formError && (
-              <div className="mb-6 p-4 rounded-lg bg-red-50 text-red-600 text-sm flex items-start">
+              <div className="mb-6 p-4 rounded-lg bg-red-50 text-red-600 text-sm flex items-start dark:bg-red-950/50 dark:text-red-400">
                 <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
                 <span>{formError}</span>
               </div>
@@ -124,15 +138,23 @@ const Login = () => {
                   <Input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="••••••••"
-                    className="pl-10"
+                    className="pl-10 pr-10"
                     required
                     disabled={isLoading}
                   />
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground hover:text-foreground transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
                 </div>
               </div>
 
@@ -150,7 +172,10 @@ const Login = () => {
 
               <Button 
                 type="submit" 
-                className="w-full bg-loommify-primary hover:bg-loommify-primary/90"
+                className={cn(
+                  "w-full hover:bg-loommify-primary/90", 
+                  theme === "dark" ? "bg-[#8F3985] text-white" : "bg-loommify-primary"
+                )}
                 disabled={isLoading}
               >
                 {isLoading ? "Connexion en cours..." : "Se connecter"}
@@ -161,7 +186,10 @@ const Login = () => {
                   <div className="w-full border-t border-muted"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-muted-foreground">Ou continuer avec</span>
+                  <span className={cn(
+                    "px-2 text-muted-foreground",
+                    theme === "light" ? "bg-white" : "bg-card"
+                  )}>Ou continuer avec</span>
                 </div>
               </div>
 
