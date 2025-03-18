@@ -4,7 +4,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "1",
     name: "Sophie Dupont",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 4325,
     lastActive: "2023-10-05",
     yearsExperience: 5,
@@ -24,7 +24,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "2",
     name: "Thomas Martin",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 3150,
     lastActive: "2023-10-09",
     yearsExperience: 3,
@@ -43,7 +43,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "3",
     name: "Julie Bernard",
-    avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 5720,
     lastActive: "2023-10-10",
     yearsExperience: 7,
@@ -63,7 +63,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "4",
     name: "Alexandre Petit",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 2890,
     lastActive: "2023-10-07",
     yearsExperience: 2,
@@ -82,7 +82,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "5",
     name: "Émilie Dubois",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 6340,
     lastActive: "2023-10-10",
     yearsExperience: 8,
@@ -102,7 +102,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "6",
     name: "Lucas Moreau",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 3980,
     lastActive: "2023-10-08",
     yearsExperience: 4,
@@ -122,7 +122,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "7",
     name: "Camille Lefebvre",
-    avatar: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 4570,
     lastActive: "2023-10-09",
     yearsExperience: 6,
@@ -142,7 +142,7 @@ export const MOCK_FREELANCERS = [
   {
     id: "8",
     name: "Antoine Rousseau",
-    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80",
     xp: 3250,
     lastActive: "2023-10-06",
     yearsExperience: 3,

@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,49 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Enhanced avatar styles to ensure consistent circular display */
+.avatar-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure all avatar containers maintain aspect ratio */
+.avatar-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+/* Avatar fallback styles */
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  background-color: #8F3985;
+  color: white;
+}
+
+/* Avatar sizes */
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.avatar-md {
+  width: 48px;
+  height: 48px;
+}
+
+.avatar-lg {
+  width: 72px;
+  height: 72px;
+}
+
+.avatar-xl {
+  width: 96px;
+  height: 96px;
 }
