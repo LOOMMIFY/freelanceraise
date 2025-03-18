@@ -4,14 +4,20 @@ import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/lib/utils";
+import { StarRating } from "@/components/ui/star-rating";
 
 const Index = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
+      <section className={cn("pt-32 pb-20 px-4", isDark && "bg-background")}>
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto text-center mb-16 animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -21,13 +27,13 @@ const Index = () => {
               Loommify réunit freelances et entreprises dans un environnement sécurisé, équitable et transparent.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-loommify-primary hover:bg-loommify-primary/90" asChild>
+              <Button size="lg" className={cn("bg-loommify-primary hover:bg-loommify-primary/90", isDark && "bg-[#8F3985] hover:bg-[#8F3985]/90")} asChild>
                 <Link to="/signup">
                   Commencer gratuitement
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild>
+              <Button size="lg" variant="outline" className={cn(isDark && "border-white/20 hover:bg-white/10")} asChild>
                 <Link to="/how-it-works">Comment ça marche</Link>
               </Button>
             </div>
@@ -49,7 +55,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-loommify-primary/5">
+      <section className={cn("py-20", isDark ? "bg-[#1A1F2C]/30" : "bg-loommify-primary/5")}>
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-loommify-primary text-sm font-medium uppercase tracking-wider">Fonctionnalités</span>
@@ -137,7 +143,10 @@ const Index = () => {
                   className="w-full h-auto"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-white rounded-xl p-4 shadow-lg animate-fade-up">
+              <div className={cn(
+                "absolute -bottom-6 -right-6 rounded-xl p-4 shadow-lg animate-fade-up",
+                isDark ? "bg-card" : "bg-white"
+              )}>
                 <div className="text-loommify-primary font-bold text-xl">+10k</div>
                 <div className="text-sm text-muted-foreground">Projets réussis</div>
               </div>
@@ -147,7 +156,7 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-loommify-primary/5">
+      <section className={cn("py-20", isDark ? "bg-[#1A1F2C]/30" : "bg-loommify-primary/5")}>
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-loommify-primary text-sm font-medium uppercase tracking-wider">Témoignages</span>
@@ -163,18 +172,21 @@ const Index = () => {
               name="Sophie Martin"
               role="Développeuse Web Freelance"
               avatar="https://randomuser.me/api/portraits/women/44.jpg"
+              rating={5}
             />
             <TestimonialCard
               quote="En tant qu'entreprise, nous avons pu trouver des talents de qualité rapidement. Le processus de recrutement est simplifié et sécurisé."
               name="Thomas Dubois"
               role="Directeur Marketing, TechSolutions"
               avatar="https://randomuser.me/api/portraits/men/32.jpg"
+              rating={4}
             />
             <TestimonialCard
               quote="La transparence de Loommify est rafraîchissante. Les conditions sont claires et je me sens respectée en tant que professionnelle."
               name="Élise Leroy"
               role="Designer UX/UI Freelance"
               avatar="https://randomuser.me/api/portraits/women/68.jpg"
+              rating={5}
             />
           </div>
         </div>
@@ -183,7 +195,10 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="bg-loommify-primary rounded-2xl p-10 text-white text-center max-w-4xl mx-auto relative overflow-hidden">
+          <div className={cn(
+            "rounded-2xl p-10 text-white text-center max-w-4xl mx-auto relative overflow-hidden",
+            isDark ? "bg-[#8F3985]" : "bg-loommify-primary"
+          )}>
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Prêt à rejoindre Loommify?</h2>
               <p className="text-white/80 mb-8 max-w-2xl mx-auto">
@@ -222,13 +237,21 @@ interface FeatureCardProps {
   icon: string;
 }
 
-const FeatureCard = ({ title, description, icon }: FeatureCardProps) => (
-  <div className="bg-white rounded-xl p-6 shadow-sm border transition-transform hover:shadow-md hover:-translate-y-1 animate-fade-up">
-    <div className="text-3xl mb-4">{icon}</div>
-    <h3 className="text-xl font-medium mb-3">{title}</h3>
-    <p className="text-muted-foreground">{description}</p>
-  </div>
-);
+const FeatureCard = ({ title, description, icon }: FeatureCardProps) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
+  return (
+    <div className={cn(
+      "rounded-xl p-6 shadow-sm border transition-transform hover:shadow-md hover:-translate-y-1 animate-fade-up",
+      isDark ? "bg-card border-border" : "bg-white"
+    )}>
+      <div className="text-3xl mb-4">{icon}</div>
+      <h3 className="text-xl font-medium mb-3">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+  );
+};
 
 interface StepItemProps {
   number: string;
@@ -236,36 +259,57 @@ interface StepItemProps {
   description: string;
 }
 
-const StepItem = ({ number, title, description }: StepItemProps) => (
-  <div className="flex items-start animate-fade-up">
-    <div className="bg-loommify-primary/10 text-loommify-primary font-bold rounded-lg h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
-      {number}
+const StepItem = ({ number, title, description }: StepItemProps) => {
+  const { theme } = useTheme();
+  
+  return (
+    <div className="flex items-start animate-fade-up">
+      <div className={cn(
+        "font-bold rounded-lg h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0",
+        theme === "dark" 
+          ? "bg-loommify-primary/20 text-loommify-primary" 
+          : "bg-loommify-primary/10 text-loommify-primary"
+      )}>
+        {number}
+      </div>
+      <div>
+        <h3 className="text-xl font-medium mb-2">{title}</h3>
+        <p className="text-muted-foreground">{description}</p>
+      </div>
     </div>
-    <div>
-      <h3 className="text-xl font-medium mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 interface TestimonialCardProps {
   quote: string;
   name: string;
   role: string;
   avatar: string;
+  rating: number;
 }
 
-const TestimonialCard = ({ quote, name, role, avatar }: TestimonialCardProps) => (
-  <div className="bg-white rounded-xl p-6 shadow-sm border transition-all hover:shadow-md animate-fade-up">
-    <div className="flex items-center mb-4">
-      <img src={avatar} alt={name} className="w-12 h-12 rounded-full mr-4" />
-      <div>
-        <div className="font-medium">{name}</div>
-        <div className="text-sm text-muted-foreground">{role}</div>
+const TestimonialCard = ({ quote, name, role, avatar, rating }: TestimonialCardProps) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
+  return (
+    <div className={cn(
+      "rounded-xl p-6 shadow-sm border transition-all hover:shadow-md animate-fade-up",
+      isDark ? "bg-card border-border" : "bg-white"
+    )}>
+      <div className="flex items-center mb-4">
+        <div className="avatar-container avatar-sm mr-4">
+          <img src={avatar} alt={name} className="avatar-image" />
+        </div>
+        <div>
+          <div className="font-medium">{name}</div>
+          <div className="text-sm text-muted-foreground">{role}</div>
+        </div>
       </div>
+      <StarRating rating={rating} className="mb-3" />
+      <p className="italic text-muted-foreground">"{quote}"</p>
     </div>
-    <p className="italic text-muted-foreground">"{quote}"</p>
-  </div>
-);
+  );
+};
 
 export default Index;
