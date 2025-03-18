@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
   const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   // Add scroll event listener
   if (typeof window !== "undefined") {
@@ -44,14 +46,23 @@ export const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-white/80 dark:bg-black/50 backdrop-blur-lg shadow-sm py-3"
-          : "bg-transparent py-5"
+          ? isDark 
+            ? "bg-[#181818]/90 backdrop-blur-lg border-b border-white/10 shadow-sm py-3" 
+            : "bg-white/80 backdrop-blur-lg shadow-sm py-3"
+          : isDark 
+            ? "bg-transparent py-5 border-b border-white/5" 
+            : "bg-transparent py-5"
       )}
     >
       <div className="container flex items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-loommify-primary">Loommify</span>
+            <span className={cn(
+              "text-2xl font-bold",
+              isDark ? "text-white" : "text-loommify-primary"
+            )}>
+              Loommify
+            </span>
           </Link>
           
           <nav className="ml-10 hidden md:flex space-x-1">
@@ -97,7 +108,14 @@ export const Navbar = () => {
               )}
               
               {/* Messages Button */}
-              <Button variant="ghost" size="icon" className="text-loommify-primary" asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className={cn(
+                  isDark ? "text-white hover:bg-white/10" : "text-loommify-primary hover:bg-loommify-primary/10"
+                )} 
+                asChild
+              >
                 <Link to="/messages">
                   <Mail className="h-5 w-5" />
                 </Link>
@@ -105,7 +123,10 @@ export const Navbar = () => {
               
               {/* Notifications Button with PopOver */}
               <NotificationsPopover>
-                <Bell className="h-5 w-5" />
+                <Bell className={cn(
+                  "h-5 w-5",
+                  isDark ? "text-white hover:text-loommify-primary" : "text-foreground hover:text-loommify-primary"
+                )} />
               </NotificationsPopover>
               
               {/* Profile Dropdown */}
@@ -113,7 +134,9 @@ export const Navbar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-9 w-9 rounded-full">
                     <Avatar className="h-9 w-9">
-                      <AvatarFallback className="bg-loommify-primary/10 text-loommify-primary">
+                      <AvatarFallback className={cn(
+                        isDark ? "bg-loommify-primary/20 text-white" : "bg-loommify-primary/10 text-loommify-primary"
+                      )}>
                         {user?.name?.charAt(0).toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
@@ -142,10 +165,21 @@ export const Navbar = () => {
             </div>
           ) : (
             <div className="hidden md:flex items-center space-x-4">
-              <Button variant="ghost" asChild>
+              <Button 
+                variant="ghost" 
+                className={cn(
+                  isDark && "text-white hover:bg-white/10"
+                )} 
+                asChild
+              >
                 <Link to="/login">Se connecter</Link>
               </Button>
-              <Button asChild>
+              <Button 
+                className={cn(
+                  isDark && "bg-white text-[#181818] hover:bg-white/90"
+                )} 
+                asChild
+              >
                 <Link to="/signup">S'inscrire</Link>
               </Button>
             </div>
@@ -155,7 +189,13 @@ export const Navbar = () => {
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button size="icon" variant="ghost">
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  className={cn(
+                    isDark && "text-white hover:bg-white/10"
+                  )}
+                >
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Menu</span>
                 </Button>
@@ -163,7 +203,12 @@ export const Navbar = () => {
               <SheetContent side="right">
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between py-4">
-                    <span className="text-xl font-bold text-loommify-primary">Loommify</span>
+                    <span className={cn(
+                      "text-xl font-bold",
+                      isDark ? "text-white" : "text-loommify-primary"
+                    )}>
+                      Loommify
+                    </span>
                     <SheetTrigger asChild>
                       <Button size="icon" variant="ghost">
                         <X className="h-5 w-5" />
@@ -197,7 +242,12 @@ export const Navbar = () => {
                         
                         <Button 
                           variant="outline" 
-                          className="w-full mt-4 text-red-500 border-red-500/20 hover:bg-red-500/10"
+                          className={cn(
+                            "w-full mt-4", 
+                            isDark 
+                              ? "text-red-400 border-red-500/20 hover:bg-red-500/10" 
+                              : "text-red-500 border-red-500/20 hover:bg-red-500/10"
+                          )}
                           onClick={handleLogout}
                         >
                           <LogOut className="mr-2 h-4 w-4" />
@@ -206,10 +256,20 @@ export const Navbar = () => {
                       </>
                     ) : (
                       <div className="mt-auto space-y-4 py-4">
-                        <Button variant="outline" className="w-full" asChild>
+                        <Button 
+                          variant="outline" 
+                          className="w-full" 
+                          asChild
+                        >
                           <Link to="/login">Se connecter</Link>
                         </Button>
-                        <Button className="w-full" asChild>
+                        <Button 
+                          className={cn(
+                            "w-full",
+                            isDark && "bg-white text-[#181818] hover:bg-white/90"
+                          )} 
+                          asChild
+                        >
                           <Link to="/signup">S'inscrire</Link>
                         </Button>
                       </div>
@@ -232,27 +292,46 @@ interface NavLinkProps {
   icon?: React.ReactNode;
 }
 
-const NavLink = ({ to, label, icon, active }: NavLinkProps) => (
-  <Link
-    to={to}
-    className={cn(
-      "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center",
-      active 
-        ? "text-loommify-primary bg-loommify-primary/10" 
-        : "text-foreground hover:text-loommify-primary hover:bg-loommify-primary/5"
-    )}
-  >
-    {icon && <span className="mr-2">{icon}</span>}
-    {label}
-  </Link>
-);
+const NavLink = ({ to, label, icon, active }: NavLinkProps) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
+  return (
+    <Link
+      to={to}
+      className={cn(
+        "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center",
+        active 
+          ? isDark
+            ? "text-white bg-white/10" 
+            : "text-loommify-primary bg-loommify-primary/10"
+          : isDark
+            ? "text-gray-300 hover:text-white hover:bg-white/10" 
+            : "text-foreground hover:text-loommify-primary hover:bg-loommify-primary/5"
+      )}
+    >
+      {icon && <span className="mr-2">{icon}</span>}
+      {label}
+    </Link>
+  );
+};
 
-const MobileNavLink = ({ to, label, icon }: NavLinkProps) => (
-  <Link
-    to={to}
-    className="px-2 py-3 text-lg font-medium hover:text-loommify-primary transition-colors flex items-center"
-  >
-    {icon}
-    {label}
-  </Link>
-);
+const MobileNavLink = ({ to, label, icon }: NavLinkProps) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
+  return (
+    <Link
+      to={to}
+      className={cn(
+        "px-2 py-3 text-lg font-medium transition-colors flex items-center",
+        isDark
+          ? "text-gray-300 hover:text-white" 
+          : "hover:text-loommify-primary"
+      )}
+    >
+      {icon}
+      {label}
+    </Link>
+  );
+};

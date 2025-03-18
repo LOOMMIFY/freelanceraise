@@ -112,3 +112,39 @@ button:focus-visible {
 .dark input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
+
+/* Enhanced Navbar styles for better contrast */
+.dark .navbar-icon {
+  color: #EAEAEA;
+}
+
+.navbar-icon {
+  color: #25283D;
+}
+
+.dark .navbar-link {
+  color: #EAEAEA;
+}
+
+.navbar-link {
+  color: #25283D;
+}
+
+.dark .navbar-link:hover {
+  color: #61C177;
+}
+
+.navbar-link:hover {
+  color: #8F3985;
+}
+
+/* Focus states for navigation elements */
+.navbar-link:focus-visible {
+  outline: 2px solid #8F3985;
+  outline-offset: 2px;
+}
+
+.dark .navbar-link:focus-visible {
+  outline: 2px solid #61C177;
+  outline-offset: 2px;
+}
