@@ -308,3 +308,79 @@ button:focus-visible {
     transform: scale(40, 40);
   }
 }
+
+/* Enhanced text contrast for Home Page */
+.text-default {
+  color: #25283D; /* Light Mode */
+}
+
+.dark .text-default {
+  color: #EAEAEA; /* Dark Mode */
+}
+
+/* CTA button improvements */
+.cta-button {
+  transition: all 0.3s ease;
+}
+
+.dark .cta-button {
+  background-color: #8F3985;
+  color: #FFFFFF;
+}
+
+.dark .cta-button:hover {
+  background-color: #A6509D;
+}
+
+/* Testimonial text fixes */
+.dark .testimonial-text {
+  color: #EAEAEA;
+}
+
+/* Scroll animation classes */
+.scroll-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-fade-in {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.scroll-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-scale-up {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-visible {
+  opacity: 1;
+  transform: translate(0) scale(1);
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-fade-up,
+  .scroll-fade-in,
+  .scroll-slide-left,
+  .scroll-slide-right,
+  .scroll-scale-up {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
