@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { MapPin, Users, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { useTheme } from "@/context/ThemeContext";
 
 interface ProjectCardProps {
   title: string;
@@ -31,10 +32,14 @@ export const ProjectCard = ({
   company,
   viewMode,
 }: ProjectCardProps) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <Card className={cn(
       "transition-all hover:shadow-md",
-      viewMode === "list" && "flex flex-row items-start"
+      viewMode === "list" && "flex flex-row items-start",
+      isDark && "bg-[#25283D] border-[#333]"
     )}>
       <div className={cn(
         "flex-1",
@@ -43,8 +48,10 @@ export const ProjectCard = ({
         <CardHeader className={viewMode === "list" ? "flex-1 p-0" : undefined}>
           <div className="flex items-start justify-between">
             <div>
-              <h3 className="font-semibold leading-none tracking-tight">{title}</h3>
-              <p className="text-sm text-muted-foreground mt-1 flex items-center">
+              <h3 className={`font-semibold leading-none tracking-tight ${isDark ? 'text-white' : ''}`}>{title}</h3>
+              <p className={`text-sm mt-1 flex items-center ${
+                isDark ? 'text-gray-300' : 'text-muted-foreground'
+              }`}>
                 {company.name}
                 {company.verified && (
                   <span className="inline-flex items-center ml-2">
@@ -58,18 +65,22 @@ export const ProjectCard = ({
         </CardHeader>
 
         <CardContent className={viewMode === "list" ? "flex-1 p-0" : undefined}>
-          <div className="mt-2 space-y-2">
-            <div className="text-lg font-medium text-loommify-primary">
+          <div className="mt-2 space-y-2 card-content">
+            <div className={`text-lg font-medium ${isDark ? 'text-[#61C177]' : 'text-loommify-primary'}`}>
               {budget.min}€ - {budget.max}€
             </div>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">{estimatedTime}</Badge>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <MapPin className="mr-1 h-4 w-4" />
+              <Badge variant="secondary" className={isDark ? 'bg-[#333] text-white' : ''}>{estimatedTime}</Badge>
+              <div className={`flex items-center text-sm ${
+                isDark ? 'text-gray-300' : 'text-muted-foreground'
+              }`}>
+                <MapPin className={`mr-1 h-4 w-4 ${isDark ? 'text-gray-300' : ''}`} />
                 {location}
               </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Users className="mr-1 h-4 w-4" />
+              <div className={`flex items-center text-sm ${
+                isDark ? 'text-gray-300' : 'text-muted-foreground'
+              }`}>
+                <Users className={`mr-1 h-4 w-4 ${isDark ? 'text-gray-300' : ''}`} />
                 {proposals} proposition{proposals > 1 ? "s" : ""}
               </div>
             </div>
@@ -77,7 +88,7 @@ export const ProjectCard = ({
         </CardContent>
 
         {viewMode === "list" && (
-          <Button className="ml-auto" asChild>
+          <Button className={`ml-auto ${isDark ? 'bg-[#8F3985] hover:bg-[#A6509D]' : ''}`} asChild>
             <Link to="/projects/1">Voir le projet</Link>
           </Button>
         )}
@@ -85,7 +96,7 @@ export const ProjectCard = ({
 
       {viewMode === "grid" && (
         <CardFooter className="pt-4">
-          <Button className="w-full" asChild>
+          <Button className={`w-full ${isDark ? 'bg-[#8F3985] hover:bg-[#A6509D]' : ''}`} asChild>
             <Link to="/projects/1">Voir le projet</Link>
           </Button>
         </CardFooter>

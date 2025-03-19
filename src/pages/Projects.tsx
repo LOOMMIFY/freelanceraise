@@ -17,6 +17,7 @@ import {
 import { Filter, LayoutGrid, List, Search } from "lucide-react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 import { toast } from "sonner";
 
 // Sample projects data
@@ -95,6 +96,8 @@ const Projects = () => {
   const [activeFilters, setActiveFilters] = useState<ProjectFiltersState | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { isAuthenticated } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   // Redirect if user is not authenticated
   if (!isAuthenticated) {
@@ -180,14 +183,14 @@ const Projects = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col projects-page ${isDark ? 'dark' : ''}`}>
       <Navbar />
       
       <main className="flex-1 pt-28 pb-16">
         <div className="container">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Offres disponibles</h1>
-            <p className="text-muted-foreground">
+            <p className={`text-muted-foreground ${isDark ? 'text-gray-300' : ''}`}>
               Trouvez des opportunités qui correspondent à vos compétences et proposez vos services
             </p>
           </div>
@@ -195,7 +198,7 @@ const Projects = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Filters - Vertical layout (desktop) / Sheet (mobile) */}
             <div className="lg:col-span-3 hidden lg:block">
-              <div className="bg-white rounded-lg border p-4 sticky top-28">
+              <div className={`rounded-lg border p-4 sticky top-28 filter-menu ${isDark ? 'bg-[#25283D]' : 'bg-white'}`}>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="font-medium text-lg">Filtres</h2>
                 </div>
@@ -207,13 +210,13 @@ const Projects = () => {
             <div className="fixed bottom-6 right-6 z-50 lg:hidden">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button className="rounded-full shadow-lg h-14 w-14 p-0">
+                  <Button className={`rounded-full shadow-lg h-14 w-14 p-0 ${isDark ? 'bg-[#8F3985]' : ''}`}>
                     <Filter className="h-6 w-6" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-full sm:max-w-md overflow-y-auto">
+                <SheetContent side="left" className={`w-full sm:max-w-md overflow-y-auto ${isDark ? 'bg-[#181818] border-[#333]' : ''}`}>
                   <SheetHeader>
-                    <SheetTitle>Filtres</SheetTitle>
+                    <SheetTitle className={isDark ? 'text-white' : ''}>Filtres</SheetTitle>
                   </SheetHeader>
                   <div className="py-4">
                     <ProjectFilters onFilterChange={handleFilterChange} />
@@ -224,7 +227,7 @@ const Projects = () => {
             
             {/* Main content area */}
             <div className="lg:col-span-9">
-              <div className="bg-white rounded-lg border p-4 mb-6">
+              <div className={`rounded-lg border p-4 mb-6 ${isDark ? 'bg-[#25283D] border-[#333]' : 'bg-white'}`}>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex-1">
                     <h2 className="font-medium">{filteredProjects.length} offres disponibles</h2>
@@ -236,16 +239,16 @@ const Projects = () => {
                         placeholder="Rechercher..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pr-10"
+                        className={`pr-10 ${isDark ? 'bg-[#181818] text-white border-[#333]' : ''}`}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                       />
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="absolute right-0 top-0 h-full"
+                        className={`absolute right-0 top-0 h-full ${isDark ? 'text-white hover:bg-[#333]' : ''}`}
                         onClick={handleSearch}
                       >
-                        <Search className="h-4 w-4" />
+                        <Search className={`h-4 w-4 project-icon ${isDark ? 'text-white' : ''}`} />
                       </Button>
                     </div>
                     
@@ -260,7 +263,7 @@ const Projects = () => {
                         onClick={() => setViewMode("grid")}
                         className="rounded-r-none"
                       >
-                        <LayoutGrid className="h-4 w-4" />
+                        <LayoutGrid className={`h-4 w-4 project-icon ${isDark ? 'text-white' : ''}`} />
                       </Button>
                       <Button
                         variant={viewMode === "list" ? "default" : "ghost"}
@@ -268,7 +271,7 @@ const Projects = () => {
                         onClick={() => setViewMode("list")}
                         className="rounded-l-none"
                       >
-                        <List className="h-4 w-4" />
+                        <List className={`h-4 w-4 project-icon ${isDark ? 'text-white' : ''}`} />
                       </Button>
                     </div>
                   </div>
@@ -294,28 +297,28 @@ const Projects = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 bg-white rounded-lg border">
+                <div className={`text-center py-12 rounded-lg border ${isDark ? 'bg-[#25283D] border-[#333] text-white' : 'bg-white'}`}>
                   <h3 className="text-lg font-medium mb-2">Aucune offre ne correspond à vos critères</h3>
-                  <p className="text-muted-foreground">Essayez de modifier vos filtres pour voir plus de résultats.</p>
+                  <p className={`${isDark ? 'text-gray-300' : 'text-muted-foreground'}`}>Essayez de modifier vos filtres pour voir plus de résultats.</p>
                 </div>
               )}
               
               {filteredProjects.length > 0 && (
-                <div className="mt-10 flex justify-center">
+                <div className="mt-10 flex justify-center pagination">
                   <nav className="flex items-center gap-1">
-                    <Button variant="outline" size="icon" disabled>
+                    <Button variant="outline" size="icon" disabled className={isDark ? 'text-white border-[#333]' : ''}>
                       &lt;
                     </Button>
-                    <Button variant="default" size="icon">
+                    <Button variant="default" size="icon" className={isDark ? 'bg-[#8F3985]' : ''}>
                       1
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" className={isDark ? 'text-white border-[#333]' : ''}>
                       2
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" className={isDark ? 'text-white border-[#333]' : ''}>
                       3
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" className={isDark ? 'text-white border-[#333]' : ''}>
                       &gt;
                     </Button>
                   </nav>

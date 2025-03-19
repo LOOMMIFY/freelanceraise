@@ -19,7 +19,7 @@ export const StarRating = ({ rating, maxRating = 5, className = "" }: StarRating
           className={`h-4 w-4 ${
             i < Math.floor(rating) 
               ? 'text-yellow-500 fill-yellow-500' 
-              : theme === 'dark' ? 'text-gray-500' : 'text-gray-300'
+              : theme === 'dark' ? 'text-gray-400' : 'text-gray-300'
           }`} 
         />
       ))}

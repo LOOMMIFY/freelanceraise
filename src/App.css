@@ -1,4 +1,3 @@
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -147,4 +146,68 @@ button:focus-visible {
 .dark .navbar-link:focus-visible {
   outline: 2px solid #61C177;
   outline-offset: 2px;
+}
+
+/* Projects page specific dark mode styles */
+.dark .projects-page {
+  background-color: #181818;
+  color: #EAEAEA;
+}
+
+/* Project card styles in dark mode */
+.dark .card {
+  background-color: #25283D;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #EAEAEA;
+}
+
+.dark .card:hover {
+  background-color: #2E2E40;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Filter menu styles in dark mode */
+.dark .filter-menu {
+  background-color: #25283D;
+  color: #EAEAEA;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Input field styles in dark mode */
+.dark .input, 
+.dark .select,
+.dark [role="combobox"] {
+  background-color: #181818;
+  color: #EAEAEA;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Button styles in dark mode */
+.dark .project-button {
+  background-color: #8F3985;
+  color: #FFFFFF;
+}
+
+.dark .project-button:hover {
+  background-color: #A6509D;
+}
+
+/* Project card content text in dark mode */
+.dark .card-content {
+  color: #EAEAEA;
+}
+
+/* Make sure muted text is still visible in dark mode */
+.dark .text-muted-foreground {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Pagination in dark mode */
+.dark .pagination {
+  color: #EAEAEA;
+}
+
+/* Icon colors in dark mode */
+.dark .project-icon {
+  color: #EAEAEA;
 }
