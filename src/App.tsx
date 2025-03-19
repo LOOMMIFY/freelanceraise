@@ -24,6 +24,7 @@ import BusinessDetail from "./pages/BusinessDetail";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/dashboard/Dashboard";
 import DashboardProfileEdit from "./pages/dashboard/DashboardProfileEdit";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
                 <Route path="/freelance/:id" element={<FreelancerDetail />} />
                 <Route path="/entreprise/:id" element={<BusinessDetail />} />
                 <Route path="/parametres" element={<Settings />} />
+                <Route path="/contact" element={<Contact />} />
                 
                 {/* Dashboard Routes */}
                 <Route path="/dashboard" element={<Dashboard />} />
